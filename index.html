@@ -9,10 +9,12 @@
 </head>
 <body>
   <canvas id="el"></canvas>
-  <script src="js/chicken.js" charset="utf-8"></script>
+  <script src="js/chicken.min.js" charset="utf-8"></script>
   <script type="text/javascript">
-    let a = new Chicken('el');
-    a.fullScreen(true,'H');
+    let a = new Chicken('el',false);
+    a.fullScreen();
+    a.isResizable();
+    a.bg('black');
   </script>
 </body>
 </html>
