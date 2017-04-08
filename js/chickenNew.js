@@ -58,21 +58,29 @@ Chicken.prototype = {
       if(this.isResizableVal){window.addEventListener('resize',draw)};
       return this;
     },
-    regularPolygon : function(x,y,n,r){
+    regularPolygon : function(x,y,n,r,angle){
       var self = this;
       function draw(){
-        var z=0,
-            pi = Math.PI,
-            x0=x+r,
-            y0=y;
+        var pi = Math.PI,
+            x0=r,
+            y0=0;
+            self.ctx.save();
+            self.ctx.translate(x,y);
+            self.ctx.rotate(angle*Math.PI/180);
+
             self.ctx.beginPath();
             self.ctx.moveTo(x0,y0);
+
         for(let i = 1;i<=n;i++){
           var zNext =  (2*pi*i)/n,
-          nextX = x+r*Math.cos(zNext),
-          nextY = y+r*Math.sin(zNext);
+          nextX = r*Math.cos(zNext),
+          nextY = r*Math.sin(zNext);
+          if(i==1){var x1=nextX,y1=nextY};
           self.ctx.lineTo(nextX,nextY);
+          if(i==n){self.ctx.lineTo(x1,y1);}
         };
+        self.ctx.restore();
+
       };
       draw();
       if(this.isResizableVal){window.addEventListener('resize',draw)};
