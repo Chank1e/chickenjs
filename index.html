@@ -13,8 +13,9 @@
   <script type="text/javascript">
     let a = new Chicken('el');
     a.fullScreen().bg('black')
-    .regularPolygon(500,500,5,100,60).border('white',10).fill('red')
-    .regularPolygon(600,600,3,50,10).border('red',15).fill('white');
+    .regularPolygon(500,500,5,100,60).addToLayer(0).border('white',10).fill('red')
+    .regularPolygon(600,600,3,50,10).addToLayer(0).border('red',15).fill('white');
+    a.drawLayer(0);
 
   </script>
 </body>

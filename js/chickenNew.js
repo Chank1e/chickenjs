@@ -6,11 +6,12 @@ function setFullHeight(O_o){
   O_o.height = document.documentElement.clientHeight;
 };
 var Chicken = function(elem){
-  this.obj = this,
   this.canvasElem = document.getElementById(elem),
   this.ctx=this.canvasElem.getContext('2d'),
-  this.resizeFunctions=[],
-  this.isResizableVal=true;
+  this.isResizableVal=true,
+  this.objects = [],
+  this.lastCreatedObject={},
+  this.layers = [];
 };
 Chicken.prototype = {
   //Fullscreen function
@@ -82,8 +83,29 @@ Chicken.prototype = {
         self.ctx.restore();
 
       };
-      draw();
-      if(this.isResizableVal){window.addEventListener('resize',draw)};
+      //draw();
+      var idOfObject=this.objects.length;
+      this.objects.push({id:idOfObject,draw:draw});
+      this.lastCreatedObject=idOfObject;
+      /*this.objects.forEach(function(item,i,arr){
+        if(item.id==idOfObject){item.funcToDraw()};
+      });*/
+      //if(this.isResizableVal){window.addEventListener('resize',draw)};
       return this;
     },
+    addToLayer : function(n){
+      if (this.layers[n]==undefined){this.layers[n]=this.lastCreatedObject.toString();}
+      else {this.layers[n]+=','+this.lastCreatedObject.toString();}
+      return this;
+    },
+    drawLayer: function(n){
+      var self = this;
+      this.layers[n].split(',').forEach(function(item,i,arr){
+        var id=item;
+        self.objects.forEach(function(item,i,arr){
+          if(item.id==id){item.draw()};
+        });
+      });
+      return this;
+    }
 };
