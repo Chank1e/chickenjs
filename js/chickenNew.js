@@ -36,23 +36,6 @@ Chicken.prototype = {
     if(this.isResizableVal){window.addEventListener('resize',draw)};
     return this;
   },
-
-    triangle : function(x,y,a){
-      var self = this;
-      function draw(){
-      let h = Math.round((a*Math.sqrt(3))/2);
-      self.ctx.beginPath();
-      self.ctx.moveTo(x,y-Math.round(2*h/3));
-      self.ctx.lineTo(x+Math.round(a/2),y+Math.round(h/3));
-      self.ctx.lineTo(x-Math.round(a/2),y+Math.round(h/3));
-      self.ctx.lineTo(x,y-Math.round(2*h/3));
-      self.ctx.lineTo(x+Math.round(a/2),y+Math.round(h/3));
-      };
-      draw();
-      if(this.isResizableVal){window.addEventListener('resize',draw)};
-      return this;
-    },
-
     border : function(color,width){
       var self = this;
       function draw(){
@@ -75,30 +58,21 @@ Chicken.prototype = {
       if(this.isResizableVal){window.addEventListener('resize',draw)};
       return this;
     },
-    hexagon : function(x,y,r){
+    regularPolygon : function(x,y,n,r){
       var self = this;
       function draw(){
-        let xStart = x-Math.round(r/Math.sqrt(3)),
-            yStart = y-r,
-            a = Math.round(2*r/Math.sqrt(3)),
-            a_2=Math.round(a/2),x_pos,y_pos;
+        var z=0,
+            pi = Math.PI,
+            x0=x+r,
+            y0=y;
             self.ctx.beginPath();
-            x_pos=xStart,y_pos=yStart;
-            self.ctx.moveTo(x_pos,y_pos);
-            x_pos+=a;
-            self.ctx.lineTo(x_pos,y_pos);
-            x_pos+=a_2;y_pos+=r;
-            self.ctx.lineTo(x_pos,y_pos);
-            x_pos-=a_2;y_pos+=r;
-            self.ctx.lineTo(x_pos,y_pos);
-            x_pos-=a;
-            self.ctx.lineTo(x_pos,y_pos);
-            x_pos-=a_2;y_pos-=r;
-            self.ctx.lineTo(x_pos,y_pos);
-            x_pos+=a_2;y_pos-=r;
-            self.ctx.lineTo(x_pos,y_pos);
-            x_pos+=1;
-            self.ctx.lineTo(x_pos,y_pos);
+            self.ctx.moveTo(x0,y0);
+        for(let i = 1;i<=n;i++){
+          var zNext =  (2*pi*i)/n,
+          nextX = x+r*Math.cos(zNext),
+          nextY = y+r*Math.sin(zNext);
+          self.ctx.lineTo(nextX,nextY);
+        };
       };
       draw();
       if(this.isResizableVal){window.addEventListener('resize',draw)};
