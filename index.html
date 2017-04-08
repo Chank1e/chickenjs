@@ -9,12 +9,13 @@
 </head>
 <body>
   <canvas id="el"></canvas>
-  <script src="js/chicken.min.js" charset="utf-8"></script>
+  <script src="js/chickenNew.js" charset="utf-8"></script>
   <script type="text/javascript">
-    let a = new Chicken('el',false);
-    a.fullScreen();
-    a.isResizable();
-    a.bg('black');
+    let a = new Chicken('el');
+    a.fullScreen().bg('black')
+    .triangle(200,700,250).border('orange',10).fill('yellow')
+    .hexagon(200,300,100).border('white',15).fill('coral');
+
   </script>
 </body>
 </html>

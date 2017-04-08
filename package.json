@@ -19,5 +19,8 @@
   "homepage": "https://github.com/Chank1e/chickenjs#readme",
   "dependencies": {
     "express": "^4.15.2"
+  },
+  "devDependencies": {
+    "babili": "0.0.12"
   }
 }
