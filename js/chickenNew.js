@@ -38,7 +38,7 @@ Chicken.prototype = {
     return this;
   },
     border : function(color,width){
-      var self = this;
+      /*var self = this;
       function draw(){
         self.ctx.lineWidth=width;
       self.ctx.strokeStyle=color;
@@ -46,17 +46,32 @@ Chicken.prototype = {
       self.ctx.stroke();
       };
       draw();
-      if(this.isResizableVal){window.addEventListener('resize',draw)};
+      if(this.isResizableVal){window.addEventListener('resize',draw)};*/
+      var self = this;
+      this.objects.forEach(function(item,i,arr){
+        if(item.id==self.lastCreatedObject){
+          item.borderColor=color;
+          item.borderWidth=width;
+        };
+      });
+      /*this.lastCreatedObject.borderColor = color;
+      this.lastCreatedObject.borderWidth = width;*/
       return this;
     },
     fill : function(color){
-      var self = this;
+      /*var self = this;
       function draw(){
       self.ctx.fillStyle=color;
       self.ctx.fill();
       };
       draw();
-      if(this.isResizableVal){window.addEventListener('resize',draw)};
+      if(this.isResizableVal){window.addEventListener('resize',draw)};*/
+      var self = this;
+      this.objects.forEach(function(item,i,arr){
+        if(item.id==self.lastCreatedObject){
+          item.fillColor=color;
+        };
+      });
       return this;
     },
     regularPolygon : function(x,y,n,r,angle){
@@ -100,12 +115,19 @@ Chicken.prototype = {
     },
     drawLayer: function(n){
       var self = this;
-      this.layers[n].split(',').forEach(function(item,i,arr){
+      function drawThisLayer(){
+      self.layers[n].split(',').forEach(function(item,i,arr){
         var id=item;
         self.objects.forEach(function(item,i,arr){
-          if(item.id==id){item.draw()};
+          if(item.id==id){item.draw();
+            if(item.fillColor){self.ctx.fillStyle=item.fillColor;self.ctx.fill();};
+            if(item.borderWidth){self.ctx.lineWidth=item.borderWidth;};
+            if(item.borderColor){self.ctx.strokeStyle=item.borderColor;self.ctx.stroke();};
+          };
         });
       });
+    };
+    drawThisLayer();
       return this;
     }
 };
