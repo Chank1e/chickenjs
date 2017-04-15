@@ -9,15 +9,16 @@
 </head>
 <body>
   <canvas id="el"></canvas>
-  <script src="js/chickenNew.js" charset="utf-8"></script>
+  <script src="js/chickenNewNew.js" charset="utf-8"></script>
   <script type="text/javascript">
     let a = new Chicken('el');
-    a.fullScreen().bg('black')
-    .regularPolygon(500,500,5,100,54).addToLayer(0).border('white',10).fill('red')
-    .regularPolygon(600,600,3,50,45).addToLayer(0).border('red',15).fill('white')
-    .regularPolygon(100,100,4,30,45).addToLayer(1).border('white',2)
-    .drawLayer(0)
-    .drawLayer(1);
+    a.fullScreen('F').bg('black');
+    a.regularPolygon(100,100,10,50,30).fill('red').border('white',10);
+    function step() {
+requestAnimationFrame(step);
+a.render();
+}
+step();
 
   </script>
 </body>
