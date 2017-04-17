@@ -14,11 +14,15 @@
     let a = new Chicken('el');
     a.fullScreen('F').bg('black');
     a.regularPolygon(100,100,10,50,30).fill('red').border('white',10);
+    setTimeout(function(){a.setNewPos(300,300)},1000);
     function step() {
-requestAnimationFrame(step);
-a.render();
-}
-step();
+      requestAnimationFrame(step);
+      a.render();
+    };
+      step();
+    /*  console.time('Time test v2');
+      a.render();
+      console.timeEnd('Time test v2')*/
 
   </script>
 </body>

@@ -44,36 +44,41 @@ Chicken.prototype = {
   },
   regularPolygon : function(x,y,n,r,angle){
     var self = this;
-    function draw(){
+    function draw(_x,_y,_n,_r,_angle){
       var pi = Math.PI,
-          x0=r,
+          x0=_r,
           y0=0;
           self.ctx.save();
-          self.ctx.translate(x,y);
-          self.ctx.rotate(angle*Math.PI/180);
+          self.ctx.translate(_x,_y);
+          self.ctx.rotate(_angle*Math.PI/180);
 
           self.ctx.beginPath();
           self.ctx.moveTo(x0,y0);
 
-      for(let i = 1;i<=n;i++){
-        var zNext =  (2*pi*i)/n,
-        nextX = r*Math.cos(zNext),
-        nextY = r*Math.sin(zNext);
+      for(let i = 1;i<=_n;i++){
+        var zNext =  (2*pi*i)/_n,
+        nextX = _r*Math.cos(zNext),
+        nextY = _r*Math.sin(zNext);
         if(i==1){var x1=nextX,y1=nextY};
         self.ctx.lineTo(nextX,nextY);
-        if(i==n){self.ctx.lineTo(x1,y1);}
+        if(i==_n){self.ctx.lineTo(x1,y1);}
       };
       self.ctx.restore();
     };
-    if(this.layers[this.currentLayer]===undefined){this.layers[this.currentLayer]=[]};
     var newObj = {
       id:self.objects+1,
       name:'regularPolygon',
-      draw:draw,
       visible:true,
       x:x,
       y:y,
+      n:n,
+      radius:r,
+      angle:angle,
+      draw:function(){
+        draw(this.x,this.y,this.n,this.radius,this.angle);
+      }
     };
+    if(this.layers[this.currentLayer]===undefined){this.layers[this.currentLayer]=[]};
     this.layers[this.currentLayer].push(newObj);
     this.objects++;
     this.selectedObject = newObj;
@@ -85,7 +90,6 @@ Chicken.prototype = {
       item.forEach(function(atem,a,irr){
 
         if(atem.id==self.selectedObject.id){
-          console.log(atem);
           atem.fill=fill;
           function fill(){
             self.ctx.fillStyle=color;self.ctx.fill();
@@ -101,13 +105,24 @@ Chicken.prototype = {
       item.forEach(function(atem,a,irr){
 
         if(atem.id==self.selectedObject.id){
-          console.log(atem);
           atem.border=border;
           function border(){
             if(width){self.ctx.lineWidth=width;}
             if(color){self.ctx.strokeStyle=color;}
             self.ctx.stroke();
           };
+        };
+      });
+    });
+    return this;
+  },
+  setNewPos: function(x,y){
+    var self = this;
+    self.layers.forEach(function(item,i,arr){
+      item.forEach(function(atem,a,irr){
+        if(atem.id==self.selectedObject.id){
+          atem.x=x;
+          atem.y=y;
         };
       });
     });

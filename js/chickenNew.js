@@ -131,10 +131,9 @@ Chicken.prototype = {
         var id=item;
         self.objects.forEach(function(item,i,arr){
           if(item.id==id){item.draw();
-            if(item.fillColor){self.ctx.fillStyle=item.fillColor;self.ctx.fill();console.log('asd');};
+            if(item.fillColor){self.ctx.fillStyle=item.fillColor;self.ctx.fill();};
             if(item.borderWidth){self.ctx.lineWidth=item.borderWidth;};
             if(item.borderColor){self.ctx.strokeStyle=item.borderColor;self.ctx.stroke();};
-            console.info('drawed object <'+id+'>');
           };
         });
       });
