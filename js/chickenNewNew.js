@@ -12,7 +12,9 @@ var Chicken = function(elem){
   this.objects =0,
   this.selectedObject,
   this.layers = [],
-  this.currentLayer=0;
+  this.currentLayer=0,
+  this.updateObjects=[],
+  this.delayTime=0;
 };
 Chicken.prototype = {
   fullScreen : function(t='F'){
@@ -94,6 +96,7 @@ Chicken.prototype = {
           function fill(){
             self.ctx.fillStyle=color;self.ctx.fill();
           };
+          self.selectedObject.fill=fill;
         };
       });
     });
@@ -111,25 +114,54 @@ Chicken.prototype = {
             if(color){self.ctx.strokeStyle=color;}
             self.ctx.stroke();
           };
+          self.selectedObject.border=border;
         };
       });
     });
     return this;
   },
-  setNewPos: function(x,y){
+  animateToPos: function(x,y,time){
     var self = this;
-    self.layers.forEach(function(item,i,arr){
+    var delta_x=(x-self.selectedObject.x)*32/time,
+    delta_y=(y-self.selectedObject.y)*32/time;
+    console.log(self.selectedObject.x)
+    /*self.layers.forEach(function(item,i,arr){
       item.forEach(function(atem,a,irr){
         if(atem.id==self.selectedObject.id){
-          atem.x=x;
-          atem.y=y;
+          atem.x+=delta_x;
+          atem.y+=delta_y;
+          self.selectedObject.x=atem.x;
+          self.selectedObject.y=atem.y;
         };
+      });
+    });*/
+    this.updateObjects.push({
+      id:self.selectedObject.id,
+      x:delta_x,
+      y:delta_y,
+      time:time,
+    });
+    return this;
+  },
+  updateAll:function(){
+    var self = this;
+      self.layers.forEach(function(item,i,arr){
+        item.forEach(function(atem,a,irr){
+          self.updateObjects.forEach(function(f,ff,fff){
+          if(atem.id===f.id){
+            atem.x+=f.x;atem.y+=f.y;
+            f.time-=33;
+            console.log(f.time)
+            if(f.time<=0){delete fff[ff];}
+          };
+        });
       });
     });
     return this;
   },
   render:function(){
     var self = this;
+    this.updateAll();
     self.layers.forEach(function(item,i,arr){
       item.forEach(function(atem,a,irr){
         if(atem.visible){atem.draw();
